@@ -84,16 +84,19 @@ def worker_login(request):
             account = cursor.fetchone()
             if account:
                 cursor.execute(
-                    "SELECT * FROM sims_workertogroups WHERE worker_id = %s ",
+                    "SELECT group_no, group_information, group_leader FROM sims_group "
+                    "JOIN sims_workertogroups ON sims_group.group_no = sims_workertogroups.group_id "
+                    "WHERE sims_workertogroups.worker_id = %s ",
                     [worker_no])
                 groups = cursor.fetchall()
+
                 cursor.execute(
-                    "SELECT * FROM sims_workertotasks WHERE worker_id = %s ",
+                    "SELECT task_no, task_information, task_leader FROM sims_task "
+                    "JOIN sims_workertotasks ON sims_task.task_no = sims_workertotasks.task_id "
+                    "WHERE sims_workertotasks.worker_id = %s ",
                     [worker_no])
                 tasks = cursor.fetchall()
                 return render(request, 'main/worker_main.html', {'groups': groups, 'tasks': tasks})
-        messages.error(request, '用户不存在或密码错误')  # 未实现
-        return render(request, 'main/worker_login.html')
 
 
 # 新增员工函数
@@ -181,7 +184,7 @@ def delete_worker(request):
 
         # 检查该员工是否为某组负责人
         cursor.execute(
-            "SELECT task_no FROM sims_group WHERE group_leader = %s ",
+            "SELECT group_no FROM sims_group WHERE group_leader = %s ",
             [worker_no])
         account = cursor.fetchone()
         if account:
@@ -292,6 +295,79 @@ def edit_task(request):
                           {'workers': worker, 'groups': group, 'tasks': task})
 
 
+# 查看任务
+def view_task(request):
+    task_no = request.GET.get("task_no")
+
+    # 连接数据库
+    conn = MySQLdb.connect(host="localhost", user="root", passwd="123456", db="cooperation", charset='utf8')
+
+    with conn.cursor(cursorclass=MySQLdb.cursors.DictCursor) as cursor:
+        # 查询任务信息和任务领导者编号
+        cursor.execute(
+            "SELECT task_no, task_information, task_leader FROM sims_task WHERE task_no = %s", [task_no])
+        task = cursor.fetchone()
+
+        # 查询领导者姓名
+        cursor.execute(
+            "SELECT worker_name FROM sims_worker WHERE worker_no = %s", [task['task_leader']])
+        leader = cursor.fetchone()
+        leader_name = leader['worker_name'] if leader else None
+
+        # 查询任务成员的详细信息
+        cursor.execute(
+            "SELECT worker_no, worker_name, worker_sex, worker_rank FROM sims_worker "
+            "JOIN sims_workertotasks ON sims_worker.worker_no = sims_workertotasks.worker_id "
+            "WHERE sims_workertotasks.task_id = %s AND sims_worker.worker_no != %s",
+            [task_no, task['task_leader']])
+        workers = cursor.fetchall()
+
+    #
+    return render(request, 'task/view_task.html', {
+        'task': task,
+        'leader_name': leader_name,
+        'workers': workers
+    })
+
+
+# 新增任务成员
+def add_worker_task(request):
+    if request.method == 'GET':
+        task_no = request.GET.get("task_no")
+        return render(request, 'task/add_worker_task.html', {'task_no': task_no})
+    else:
+        task_id = request.POST.get('task_id', '')
+        worker_id = request.POST.get('worker_id', '')
+        conn = MySQLdb.connect(host="localhost", user="root", passwd="123456", db="cooperation", charset='utf8')
+        with conn.cursor(cursorclass=MySQLdb.cursors.DictCursor) as cursor:
+            cursor.execute("INSERT INTO sims_workertotasks (task_id, worker_id) "
+                           "values (%s,%s)", [task_id, worker_id])
+            conn.commit()
+            # 查询任务信息和任务领导者编号
+            cursor.execute(
+                "SELECT task_no, task_information, task_leader FROM sims_task WHERE task_no = %s", [task_id])
+            task = cursor.fetchone()
+
+            # 查询领导者姓名
+            cursor.execute(
+                "SELECT worker_name FROM sims_worker WHERE worker_no = %s", [task['task_leader']])
+            leader = cursor.fetchone()
+            leader_name = leader['worker_name'] if leader else None
+
+            # 查询任务成员的详细信息
+            cursor.execute(
+                "SELECT worker_no, worker_name, worker_sex, worker_rank FROM sims_worker "
+                "JOIN sims_workertotasks ON sims_worker.worker_no = sims_workertotasks.task_id "
+                "WHERE sims_workertotasks.task_id = %s AND sims_worker.worker_no != %s",
+                [task_id, task['task_leader']])
+            workers = cursor.fetchall()
+        return render(request, 'task/view_task.html', {
+            'task': task,
+            'leader_name': leader_name,
+            'workers': workers
+        })
+
+
 #########################################################################################################################
 # 分组相关
 # 新增分组函数
@@ -377,4 +453,77 @@ def edit_group(request):
             return render(request, 'main/administrator_main.html',
                           {'workers': worker, 'groups': group, 'tasks': task})
 
+
+def view_group(request):
+    group_no = request.GET.get("group_no")
+
+    # 连接数据库
+    conn = MySQLdb.connect(host="localhost", user="root", passwd="123456", db="cooperation", charset='utf8')
+
+    with conn.cursor(cursorclass=MySQLdb.cursors.DictCursor) as cursor:
+        # 查询组信息和组领导者编号
+        cursor.execute(
+            "SELECT group_no, group_information, group_leader FROM sims_group WHERE group_no = %s", [group_no])
+        group = cursor.fetchone()
+
+        # 查询领导者姓名
+        cursor.execute(
+            "SELECT worker_name FROM sims_worker WHERE worker_no = %s", [group['group_leader']])
+        leader = cursor.fetchone()
+        leader_name = leader['worker_name'] if leader else None
+
+        # 查询小组成员的详细信息
+        cursor.execute(
+            "SELECT worker_no, worker_name, worker_sex, worker_rank FROM sims_worker "
+            "JOIN sims_workertogroups ON sims_worker.worker_no = sims_workertogroups.worker_id "
+            "WHERE sims_workertogroups.group_id = %s AND sims_worker.worker_no != %s",
+            [group_no, group['group_leader']])
+        workers = cursor.fetchall()
+
+    #
+    return render(request, 'group/view_group.html', {
+        'group': group,
+        'leader_name': leader_name,
+        'workers': workers
+    })
+
+
+# 给小组新增组员
+def add_worker_group(request):
+    if request.method == 'GET':
+        group_no = request.GET.get("group_no")
+        return render(request, 'group/add_worker_group.html', {'group_no': group_no})
+    else:
+        group_id = request.POST.get('group_id', '')
+        worker_id = request.POST.get('worker_id', '')
+        conn = MySQLdb.connect(host="localhost", user="root", passwd="123456", db="cooperation", charset='utf8')
+        with conn.cursor(cursorclass=MySQLdb.cursors.DictCursor) as cursor:
+            cursor.execute("INSERT INTO sims_workertogroups (group_id, worker_id) "
+                           "values (%s,%s)", [group_id, worker_id])
+            conn.commit()
+            # 查询组信息和组领导者编号
+            cursor.execute(
+                "SELECT group_no, group_information, group_leader FROM sims_group WHERE group_no = %s", [group_id])
+            group = cursor.fetchone()
+
+            # 查询领导者姓名
+            cursor.execute(
+                "SELECT worker_name FROM sims_worker WHERE worker_no = %s", [group['group_leader']])
+            leader = cursor.fetchone()
+            leader_name = leader['worker_name'] if leader else None
+
+            # 查询小组成员的详细信息
+            cursor.execute(
+                "SELECT worker_no, worker_name, worker_sex, worker_rank FROM sims_worker "
+                "JOIN sims_workertogroups ON sims_worker.worker_no = sims_workertogroups.worker_id "
+                "WHERE sims_workertogroups.group_id = %s AND sims_worker.worker_no != %s",
+                [group_id, group['group_leader']])
+            workers = cursor.fetchall()
+
+            #
+        return render(request, 'group/view_group.html', {
+            'group': group,
+            'leader_name': leader_name,
+            'workers': workers
+        })
 #########################################################################################################################
