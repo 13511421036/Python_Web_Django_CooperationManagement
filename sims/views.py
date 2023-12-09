@@ -303,7 +303,6 @@ def view_task(request):
     conn = MySQLdb.connect(host="localhost", user="root", passwd="123456", db="cooperation", charset='utf8')
 
     with conn.cursor(cursorclass=MySQLdb.cursors.DictCursor) as cursor:
-
         # 查询任务信息和任务领导者编号
 
         # 查询组信息和组领导者编号
@@ -317,7 +316,6 @@ def view_task(request):
             "SELECT worker_name FROM sims_worker WHERE worker_no = %s", [task['task_leader']])
         leader = cursor.fetchone()
         leader_name = leader['worker_name'] if leader else None
-
 
         # 查询任务成员的详细信息
         cursor.execute(
@@ -339,7 +337,6 @@ def view_task(request):
         'leader_name': leader_name,
         'workers': workers
     })
-
 
 
 # 新增任务成员
@@ -378,7 +375,6 @@ def add_worker_task(request):
             'leader_name': leader_name,
             'workers': workers
         })
-
 
 
 #########################################################################################################################
