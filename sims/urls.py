@@ -19,5 +19,8 @@ urlpatterns = [
     path('delete_group/', views.delete_group, name='delete_group'),
     path('edit_task/', views.edit_task, name='edit_task'),
     path('edit_group/', views.edit_group, name='edit_group'),
+    path('view_group/', views.view_group, name='view_group'),
+    path('view_task/', views.view_task, name='view_task'),
+    path('add_worker_group/', views.add_worker_group, name='add_worker_group'),
 ]
 

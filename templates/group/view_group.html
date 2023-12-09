@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>小组界面</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+        .container {
+            width: calc(100% - 40px); /* 减去左右边距总和 */
+            margin: 0 auto; /* 居中显示 */
+            padding: 20px; /* 增加边距 */
+            box-sizing: border-box;
+        }
+        .section {
+            position: relative; /* 为悬浮头部做准备 */
+            margin-bottom: 30px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            overflow: auto;
+            height: 400px; /* 固定框大小 */
+        }
+        .section-header {
+            position: sticky;
+            top: 0; /* 使标题部分悬浮 */
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px;
+            background-color: #f0f0f0;
+            border-bottom: 1px solid #ddd;
+            z-index: 100;
+        }
+        .section-title {
+            font-size: 20px;
+            margin: 0;
+        }
+        a {
+            text-decoration: none;
+            color: #333;
+            background: #ddd;
+            padding: 10px 15px;
+            border-radius: 5px;
+        }
+        .sticky-header {
+            position: sticky;
+            top: 66px; /* 表头在悬浮标题下方 */
+            background-color: #f0f0f0;
+            z-index: 100;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 0;
+        }
+        th, td {
+            padding: 10px;
+            text-align: center;
+            border: 1px solid #ddd;
+        }
+        .head {
+            text-align: center; /* 水平居中对齐文本 */
+            padding: 5px; /* 添加一些内边距 */
+        }
+        h1 {
+            display: inline-block;
+            margin: 0 0 10px;
+        }
+        .button-container {
+            text-align: right; /* 右对齐按钮 */
+            padding-right: 20px; /* 与.head的padding保持一致 */
+        }
+    </style>
+</head>
+<body>
+    <div class="head">
+        <h1>小组信息</h1>
+        <div class="button-container">
+        </div>
+    </div>
+    <div class="container">
+
+
+        <!-- 组列表 -->
+        <div class="section">
+            <div class="section-header">
+                <h2 class="section-title">{{ group.group_information }}</h2>
+            </div>
+            <div class="section-header">
+                <h2 class="section-title">负责人: {{ group.group_leader }} {{ leader_name }}</h2>
+            </div>
+            <div class="section-header">
+                <h2 class="section-title">小组成员</h2>
+                <a href="../add_worker_group/?group_no={{ group.group_no }}">新增</a>
+            </div>
+            <table>
+                <thead class="sticky-header">
+                    <tr>
+                        <th>工号</th>
+                        <th>姓名</th>
+                        <th>级别</th>
+                        <th>性别</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for worker in workers %}
+                    <tr>
+                        <td>{{ worker.worker_no }}</td>
+                        <td>{{ worker.worker_name }}</td>
+                        <td>{{ worker.worker_rank }}</td>
+                        <td>{{ worker.worker_sex }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+
+        </div>
+
+
+    </div>
+</body>
+</html>
