@@ -90,14 +90,13 @@
         <!-- 组列表 -->
         <div class="section">
             <div class="section-header">
-                <h2 class="section-title">任务内容: {{ task.task_information }}</h2>
+                <h2 class="section-title">{{ task.task_information }}</h2>
             </div>
             <div class="section-header">
                 <h2 class="section-title">负责人: {{ task.task_leader }} {{ leader_name }}</h2>
             </div>
             <div class="section-header">
-                <h2 class="section-title">小组成员</h2>
-                <a href="../add_worker_task/?task_no={{ task.task_no }}">新增</a>
+                <h2 class="section-title">任务成员</h2>
             </div>
             <table>
                 <thead class="sticky-header">
