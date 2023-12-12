@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>新增任务成员</title>
+    <title>编辑分组</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -68,24 +68,23 @@
     </style>
 </head>
 <body>
-    <form method="post" action="../add_worker_task/">
+    <form method="post" action="../edit_administrator/">
         <div class="head">
-            <h1>新增任务成员</h1>
+            <h1>编辑管理员</h1>
         </div>
         {% csrf_token %}
         <table>
-
             <tr>
-                <th>组员工号</th>
-                <td><input type="text" name="worker_id" value="{{ worker_no }}" readonly/></td>
+                <th>管理员账号</th>
+                <td><input type="text" name="administrator_no" value="{{ administrator.administrator_no }}" readonly/></td>
             </tr>
             <tr>
-                <th>任务号</th>
-                <td><input type="text" name="task_id" /></td>
+                <th>管理员密码</th>
+                <td><input type="text" name="administrator_password" value="{{ administrator.administrator_password }}"/></td>
             </tr>
             <tr>
                 <td colspan="2" style="text-align: center;">
-                    <input type="submit" value="提交"/>
+                    <input type="submit" value="提交修改"/>
                 </td>
             </tr>
         </table>
