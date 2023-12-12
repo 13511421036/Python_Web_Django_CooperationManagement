@@ -93,5 +93,13 @@
             </tr>
         </table>
     </form>
+    {% if show_popup %}
+        <script>
+            window.onload = function () {
+                // 显示弹窗
+                alert("{{ popup_message }}");
+            };
+        </script>
+    {% endif %}
 </body>
 </html>
