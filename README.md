@@ -1,1 +1,1 @@
-Django,MySQL,Python
+Django,MySQL,Python and a little js
