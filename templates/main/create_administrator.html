@@ -68,9 +68,19 @@
     </style>
 </head>
 <body>
-    <form method="post" action="../create_administrator/">
+    <form>
         <div class="head">
             <h1>新建管理员</h1>
+        </div>
+        {% if messages %}
+            <div class="messages">
+                {% for message in messages %}
+                    <div class="{{ message.tags }}">{{ message }}</div>
+                {% endfor %}
+            </div>
+        {% endif %}
+        <div class="button-container">
+            <a methods="get" href="../back_to_vip_administrator">退出编辑</a>
         </div>
         {% csrf_token %}
         <table>
@@ -84,7 +94,7 @@
             </tr>
             <tr>
                 <td colspan="2" style="text-align: center;">
-                    <input type="submit" value="提交"/>
+                    <input type="submit" value="提交" href="../create_administrator" formmethod="post"/>
                 </td>
             </tr>
         </table>

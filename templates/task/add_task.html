@@ -72,6 +72,16 @@
         <div class="head">
             <h1>新建任务</h1>
         </div>
+        {% if messages %}
+        <div class="messages">
+            {% for message in messages %}
+                <div class="{{ message.tags }}">{{ message }}</div>
+            {% endfor %}
+        </div>
+        {% endif %}
+        <div class="button-container">
+            <a methods="post" href="../back_to_administrator_main/?administrator_no={{ administrator_no }}">退出新增</a>
+        </div>
         {% csrf_token %}
         <table>
             <tr>

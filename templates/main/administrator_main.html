@@ -90,7 +90,7 @@
         <div class="section">
             <div class="section-header">
                 <h2 class="section-title">员工信息</h2>
-                <a href="../add_worker">添加员工</a>
+                <a href="../add_worker/?administrator_no={{ administrator_no }}">添加员工</a>
             </div>
             <table>
                 <thead class="sticky-header">
@@ -116,9 +116,9 @@
                         <td>{{ worker.worker_sex }}</td>
                         <td>{{ worker.worker_create_date }}</td>
                         <td>
-                            <a href="../edit_worker/?worker_no={{ worker.worker_no }}">编辑</a>
-                            <a href="../delete_worker/?worker_no={{ worker.worker_no }}">删除</a>
-                            <a href="../add_worker_task/?worker_no={{ worker.worker_no }}">分配工作</a>
+                            <a href="../edit_worker/?worker_no={{ worker.worker_no }}, administrator_no={{ administrator_no }}">编辑</a>
+                            <a href="../delete_worker/?worker_no={{ worker.worker_no }}, administrator_no={{ administrator_no }}">删除</a>
+                            <a href="../add_worker_task/?worker_no={{ worker.worker_no }}, administrator_no={{ administrator_no }}">分配工作</a>
                         </td>
                     </tr>
                     {% endfor %}
@@ -130,7 +130,7 @@
         <div class="section">
             <div class="section-header">
                 <h2 class="section-title">组信息</h2>
-                <a href="../add_group">添加组</a>
+                <a href="../add_group/?administrator_no={{ administrator_no }}">添加组</a>
             </div>
             <table>
                 <thead class="sticky-header">
@@ -148,9 +148,9 @@
                         <td>{{ group.group_information }}</td>
                         <td>{{ group.group_leader }}</td>
                         <td>
-                            <a href="../edit_group/?group_no={{ group.group_no }}">编辑</a>
-                            <a href="../delete_group/?group_no={{ group.group_no }}">删除</a>
-                            <a href="../view_group/?group_no={{ group.group_no }}">查看小组</a>
+                            <a href="../edit_group/?group_no={{ group.group_no }}, administrator_no={{ administrator_no }}">编辑</a>
+                            <a href="../delete_group/?group_no={{ group.group_no }}, administrator_no={{ administrator_no }}">删除</a>
+                            <a href="../view_group/?group_no={{ group.group_no }}, administrator_no={{ administrator_no }}">查看小组</a>
                         </td>
                     </tr>
                     {% endfor %}
@@ -162,7 +162,7 @@
         <div class="section">
             <div class="section-header">
                 <h2 class="section-title">任务列表</h2>
-                <a href="../add_task">添加任务</a>
+                <a href="../add_task/?administrator_no={{ administrator_no }}">添加任务</a>
             </div>
             <table>
                 <thead class="sticky-header">
@@ -180,9 +180,9 @@
                         <td>{{ task.task_information }}</td>
                         <td>{{ task.task_leader }}</td>
                         <td>
-                            <a href="../edit_task/?task_no={{ task.task_no }}">编辑</a>
-                            <a href="../delete_task/?task_no={{ task.task_no }}">删除</a>
-                            <a href="../view_task/?task_no={{ task.task_no }}">查看任务</a>
+                            <a href="../edit_task/?task_no={{ task.task_no }}, administrator_no={{ administrator_no }}">编辑</a>
+                            <a href="../delete_task/?task_no={{ task.task_no }}, administrator_no={{ administrator_no }}">删除</a>
+                            <a href="../view_task/?task_no={{ task.task_no }},administrator={{ administrator_no }}">查看任务</a>
                         </td>
                     </tr>
                     {% endfor %}

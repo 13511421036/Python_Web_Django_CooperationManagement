@@ -25,5 +25,7 @@ urlpatterns = [
     path('add_worker_task/', views.add_worker_task, name='add_worker_task'),
     path('edit_administrator/', views.edit_administrator, name='edit_administrator'),
     path('delete_administrator/', views.delete_administrator, name='delete_administrator'),
+    path('back_to_vip_administrator/', views.back_to_vip_administrator, name='back_to_vip_administrator'),
+    path('back_to_administrator_main/', views.back_to_administrator_main, name='back_to_administrator_main'),
 ]
 

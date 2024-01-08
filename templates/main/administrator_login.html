@@ -75,6 +75,14 @@
         <div class="head">
             <h1>管理员登录</h1>
         </div>
+        {% if messages %}
+        <div class="messages">
+            {% for message in messages %}
+                <div class="{{ message.tags }}">{{ message }}</div>
+            {% endfor %}
+        </div>
+        {% endif %}
+
         {% csrf_token %}
         <table>
             <tr>
@@ -92,5 +100,8 @@
             </tr>
         </table>
     </form>
+
+
 </body>
+
 </html>

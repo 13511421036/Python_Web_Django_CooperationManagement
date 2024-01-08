@@ -68,11 +68,14 @@
     </style>
 </head>
 <body>
-    <form method="post" action="../edit_administrator/">
+    <form>
         <div class="head">
             <h1>编辑管理员</h1>
         </div>
         {% csrf_token %}
+        <div class="button-container">
+            <a methods="get" href="../back_to_vip_administrator">退出编辑</a>
+        </div>
         <table>
             <tr>
                 <th>管理员账号</th>
@@ -84,7 +87,7 @@
             </tr>
             <tr>
                 <td colspan="2" style="text-align: center;">
-                    <input type="submit" value="提交修改"/>
+                    <input type="submit" value="提交修改" href="../edit_administrator" formmethod="post"/>
                 </td>
             </tr>
         </table>

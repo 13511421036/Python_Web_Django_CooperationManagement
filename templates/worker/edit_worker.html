@@ -69,9 +69,12 @@
 </head>
 <body>
 
-    <form method="post" action="../edit_worker/">
+    <form>
         <div class="head">
             <h1>修改员工信息</h1>
+        </div>
+        <div class="button-container">
+            <a methods="post" href="../back_to_administrator_main/?administrator_no={{ administrator_no }}">退出编辑</a>
         </div>
         {% csrf_token %}
         <table>
@@ -101,7 +104,7 @@
             </tr>
             <tr>
                 <td colspan="2" style="text-align: center;">
-                    <input type="submit" value="提交修改"/>
+                    <input type="submit" value="提交修改" href="../edit_worker/" formmethod="post"/>
                 </td>
             </tr>
         </table>
