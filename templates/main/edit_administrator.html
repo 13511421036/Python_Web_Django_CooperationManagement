@@ -65,6 +65,17 @@
             margin: 0;
             display: inline-block;
         }
+        .button-container {
+            text-align: right; /* 右对齐按钮 */
+            padding-right: 20px; /* 与.head的padding保持一致 */
+        }
+        a {
+            text-decoration: none;
+            color: #333;
+            background: #ddd;
+            padding: 10px 15px;
+            border-radius: 5px;
+        }
     </style>
 </head>
 <body>
@@ -74,7 +85,7 @@
         </div>
         {% csrf_token %}
         <div class="button-container">
-            <a methods="get" href="../back_to_vip_administrator">退出编辑</a>
+            <a href="javascript:history.back()">退出编辑</a>
         </div>
         <table>
             <tr>

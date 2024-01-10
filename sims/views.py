@@ -5,7 +5,6 @@ from django.contrib import messages
 from django.shortcuts import redirect
 
 
-# Create your views here.
 # return 应该用history 减少请求提高性能
 # 欢迎界面
 
@@ -168,7 +167,7 @@ def worker_login(request):
 # 新增员工
 def add_worker(request):
     if request.method == 'GET':
-        administrator_no=request.POST.get('administrator_no', '')
+        administrator_no = request.POST.get('administrator_no', '')
         return render(request, 'worker/add_worker.html', {'administrator_no': administrator_no})
     else:
         worker_no = request.POST.get('worker_no', '')
@@ -305,8 +304,8 @@ def view_worker_self(request):
 # （未实现任务号判重，或者任务号自添加？）
 def add_task(request):
     if request.method == 'GET':
-        administrator_no=request.POST.get('administrator_no', '')
-        return render(request, 'task/add_task.html', {'administrator_no':administrator_no})
+        administrator_no = request.POST.get('administrator_no', '')
+        return render(request, 'task/add_task.html', {'administrator_no': administrator_no})
     else:
         task_no = request.POST.get('task_no', '')
         task_information = request.POST.get('task_information', '')
@@ -364,12 +363,13 @@ def delete_task(request):
 def edit_task(request):
     if request.method == 'GET':
         task_no = request.GET.get("task_no")
-        administrator_no=request.GET.get("administrator")
+        administrator_no = request.GET.get("administrator")
         conn = MySQLdb.connect(host="localhost", user="root", passwd="123456", db="cooperation", charset='utf8')
         with conn.cursor(cursorclass=MySQLdb.cursors.DictCursor) as cursor:
             cursor.execute("SELECT * FROM sims_task where task_no =%s", [task_no])
             task = cursor.fetchone()
-        return render(request, 'task/edit_task.html', {'task': task, 'administrator_no':administrator_no}, 'show_popup', False)
+        return render(request, 'task/edit_task.html', {'task': task, 'administrator_no': administrator_no},
+                      'show_popup', False)
     else:
         task_no = request.POST.get('task_no', '')
         task_information = request.POST.get('task_information', '')
@@ -443,20 +443,22 @@ def view_task(request):
 def add_worker_task(request):
     if request.method == 'GET':
         worker_no = request.GET.get("worker_no")
-        administrator_no=request.GET.get("administrator_no")
-        return render(request, 'task/add_worker_task.html', {'worker_no': worker_no, 'administrator_no': administrator_no})
+        administrator_no = request.GET.get("administrator_no")
+        return render(request, 'task/add_worker_task.html',
+                      {'worker_no': worker_no, 'administrator_no': administrator_no})
     else:
         task_id = request.POST.get('task_id', '')
         worker_id = request.POST.get('worker_id', '')
         conn = MySQLdb.connect(host="localhost", user="root", passwd="123456", db="cooperation", charset='utf8')
         with conn.cursor(cursorclass=MySQLdb.cursors.DictCursor) as cursor:
             cursor.execute("SELECT * FROM sims_task WHERE task_no = %s", [task_id])
-            account=cursor.fetchone()
+            account = cursor.fetchone()
             if not account:
                 messages.add_message(request, messages.ERROR, "任务不存在")
                 return redirect('add_worker_task')
-            cursor.execute("SELECT * FROM sims_workertotasks WHERE task_id = %s and worker_id = %s", [task_id,worker_id])
-            account=cursor.fetchone()
+            cursor.execute("SELECT * FROM sims_workertotasks WHERE task_id = %s and worker_id = %s",
+                           [task_id, worker_id])
+            account = cursor.fetchone()
             if account:
                 messages.add_message(request, messages.ERROR, "该员工已参与该任务")
                 return redirect('add_worker_task')
@@ -482,18 +484,18 @@ def add_worker_task(request):
 # 新增分组
 def add_group(request):
     if request.method == 'GET':
-        administrator_no=request.GET.get('administrator')
-        return render(request, 'group/add_group.html', {'administrator_no':administrator_no})
+        administrator_no = request.GET.get('administrator')
+        return render(request, 'group/add_group.html', {'administrator_no': administrator_no})
     else:
         group_no = request.POST.get('group_no', '')
         group_information = request.POST.get('group_information', '')
         group_leader = request.POST.get('group_leader', '')
         conn = MySQLdb.connect(host="localhost", user="root", passwd="123456", db="cooperation", charset='utf8')
         with conn.cursor(cursorclass=MySQLdb.cursors.DictCursor) as cursor:
-            cursor.execute("SELECT * FROM sims_group WHERE group_no=%s",[group_no])
-            account=cursor.fetchone()
+            cursor.execute("SELECT * FROM sims_group WHERE group_no=%s", [group_no])
+            account = cursor.fetchone()
             if account:
-                messages.add_message(request,messages.ERROR, "工作组已存在")
+                messages.add_message(request, messages.ERROR, "工作组已存在")
                 return redirect('add_group')
             cursor.execute("INSERT INTO sims_group (group_no, group_information, group_leader) "
                            "values (%s,%s,%s)", [group_no, group_information, group_leader])
@@ -545,7 +547,8 @@ def edit_group(request):
         with conn.cursor(cursorclass=MySQLdb.cursors.DictCursor) as cursor:
             cursor.execute("SELECT * FROM sims_group where group_no =%s", [group_no])
             group = cursor.fetchone()
-        return render(request, 'group/edit_group.html', {'group': group, 'administrator_no': administrator_no}, 'show_popup', False)
+        return render(request, 'group/edit_group.html', {'group': group, 'administrator_no': administrator_no},
+                      'show_popup', False)
     else:
         group_no = request.POST.get('group_no', '')
         group_information = request.POST.get('group_information', '')
@@ -617,15 +620,16 @@ def add_worker_group(request):
         conn = MySQLdb.connect(host="localhost", user="root", passwd="123456", db="cooperation", charset='utf8')
         with conn.cursor(cursorclass=MySQLdb.cursors.DictCursor) as cursor:
             cursor.execute("SELECT * FROM sims_group WHERE group_no = %s", [group_id])
-            account=cursor.fetchone()
+            account = cursor.fetchone()
             if not account:
-                messages.add_message(request,messages.ERROR, "组不存在")
+                messages.add_message(request, messages.ERROR, "组不存在")
                 return redirect('add_worker_group')
 
-            cursor.execute("SELECT * FROM sims_workertogroups WHERE group_id=%s AND worker_id = %s",[group_id,worker_id])
-            account=cursor.fetchone()
+            cursor.execute("SELECT * FROM sims_workertogroups WHERE group_id=%s AND worker_id = %s",
+                           [group_id, worker_id])
+            account = cursor.fetchone()
             if account:
-                messages.add_message(request,messages.ERROR, "该员工已在组中")
+                messages.add_message(request, messages.ERROR, "该员工已在组中")
                 return redirect('add_worker_group')
 
             cursor.execute("INSERT INTO sims_workertogroups (group_id, worker_id) "

@@ -76,6 +76,17 @@
             text-align: right; /* 右对齐按钮 */
             padding-right: 20px; /* 与.head的padding保持一致 */
         }
+        .button-container {
+            text-align: right; /* 右对齐按钮 */
+            padding-right: 20px; /* 与.head的padding保持一致 */
+        }
+        a {
+            text-decoration: none;
+            color: #333;
+            background: #ddd;
+            padding: 10px 15px;
+            border-radius: 5px;
+        }
     </style>
 </head>
 <body>
@@ -91,7 +102,7 @@
         <div class="section">
             <div class="section-header">
                 <h2 class="section-title">{{ task.task_information }}</h2>
-                <a methods="post" href="../back_to_administrator_main/?administrator_no={{ administrator_no }}">退出查看</a>
+                <a href="javascript:history.back()">退出查看</a>
             </div>
             <div class="section-header">
                 <h2 class="section-title">负责人: {{ task.task_leader }} {{ leader_name }}</h2>

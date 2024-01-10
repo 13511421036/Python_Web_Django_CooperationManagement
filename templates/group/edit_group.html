@@ -65,6 +65,17 @@
             margin: 0;
             display: inline-block;
         }
+        .button-container {
+            text-align: right; /* 右对齐按钮 */
+            padding-right: 20px; /* 与.head的padding保持一致 */
+        }
+        a {
+            text-decoration: none;
+            color: #333;
+            background: #ddd;
+            padding: 10px 15px;
+            border-radius: 5px;
+        }
     </style>
 </head>
 <body>
@@ -73,7 +84,7 @@
             <h1>编辑工作分组</h1>
         </div>
         <div class="button-container">
-            <a methods="post" href="../back_to_administrator_main/?administrator_no={{ administrator_no }}">退出新增</a>
+            <a href="javascript:history.back()">退出新增</a>
         </div>
         {% csrf_token %}
         <table>
